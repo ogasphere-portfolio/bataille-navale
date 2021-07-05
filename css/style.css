@@ -73,9 +73,10 @@ header.cell {
   border: 1px solid black;
   padding: 0.5rem;
   margin: 1rem auto;
-  max-height: 3rem;
+  max-height: 10rem;
   overflow: auto;
   font-size: 1rem;
+  line-height: 0.5em;
 }
 
 #hide-actions {
