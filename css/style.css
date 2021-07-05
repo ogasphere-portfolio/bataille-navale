@@ -1,0 +1,77 @@
+body {
+  margin: 100px;
+  text-align: center;
+}
+
+/*
+ * Exo 1
+ */
+button {
+  background: #000;
+  border: 0;
+  color: #fff;
+  font-size: 1.2em;
+  padding: 1em 2em;
+}
+
+#times {
+  margin-top: 3em;
+  font-size: 1.5em
+}
+
+/*
+ * Exo 2
+ */
+h1 {
+  font-size: 2em;
+  margin-bottom: .5em;
+}
+
+#shop,
+#colors {
+  width: 28em;
+  margin: auto;
+}
+
+form {
+  overflow: hidden;
+}
+
+#shop-items {
+  list-style: decimal;
+}
+
+#shop-item-input,
+#colors-input {
+  font-size: 16px;
+  height: 3.8em;
+  width: 20em;
+  text-align: center;
+}
+
+#shop-item-input:focus,
+#colors-input:focus {
+  background: #ddd;
+}
+
+#shop input,
+#shop button,
+#colors input,
+#colors button {
+  float: left;
+}
+
+#shop-items,
+#colors-list {
+  margin-top: 1em;
+  font-size: 1.5em;
+}
+
+#colors-error {
+  color: red;
+  margin: 1em;
+}
+
+ol {
+	list-style-type: decimal;
+}

@@ -1,50 +1,32 @@
-# La bataille navale
+# Clic !
 
-Maintenant qu'on a vu le langage JavaScript, on va pouvoir coder un jeu :tada: :muscle:
+## Exo 1 : compteur
 
-<details><summary>Cool non ?</summary>
+Créer un compteur de clics.
 
-![cool-cool-cool-cool-cool-cool](https://media.giphy.com/media/XAdbHJywVjF5K/giphy.gif)
+## Exo 2 : sondage
 
-</details>
+On peut cliquer sur deux boutons, et il faut compter le nombre de clics sur chacun d'eux :
 
-## Notre bataille navale
+![exo2](exo2.png)
 
-Tout le monde connaît la bataille navale et ses règles :
-> _C'est un jeu à 2 joueurs, où on positionne nos bateaux sur une grille, et on envoie des missiles tour à tour sur les bateaux adverses, sans connaître leur position._
 
-Mais le jeu à deux joueurs est trop compliqué pour nos petites mains pas encore expertes. Donc on ne va avoir qu'un seul joueur.
+## Exo 3 : liste de courses
 
-Ok, alors on joue contre un bot (un robot) ?  
-Euh... :thinking: non. Encore une fois, ce serait trop compliqué pour nos phalanges débutantes. Donc on va jouer seul, sans bateau. On va uniquement essayer de tirer sur les bateaux de l'adversaire (arf, ce serait pas un bot finalement ça !? :confused:)
+1. Récupérer le contenu d'un input à la soumission du formulaire
+2. Si pas de contenu, message d'erreur dans la console
+3. Si une `value` existe, on ajoute un nouvel élément dans la liste ordonnée `<ol>`
 
-Au final, notre bataille navale :  
-> _C'est un jeu ~à 2 joueurs~ à 1 joueur, où ~on positionne nos bateaux sur une grille, et~ on envoie des missiles ~tour à tour~ sur les bateaux "adverses", sans connaître leur position._
+![exo3](exo3.png)
 
-Easy :sunglasses:
+## BONUS Exo 4 : couleurs
 
-## Nouveautés techniques
+1. Tester si la `value` est une couleur
+	=> Il faut que ça commence par un #
+	=> Il faut que la longueur fasse 4 (#FFF) ou 7 (#FFFFFF)
+2. Si ce n'est pas une couleur, écrire un message d'erreur.
+3. Si c'est une couleur, on l'ajoute au `<ul>`.
+4. On met le `<li>` dans la couleur de la couleur tapée
+5. On supprime la valeur de l'input à la soumission du formulaire
 
-Pour pouvoir accomplir tout cela, on va avoir besoin d'apprendre :
-
-- le DOM : lecture, ajout, modification, suppression
-- les events
-- `localStorage`
-
-Mais en plus, il va falloir travailler son algo !  
-Oui oui, comme dans algoBlocs :wink:  
-La difficulté sera d'arriver à retranscrire avec des éléments de code, les concepts du jeu...
-
-<details><summary>Ce n'est toujours pas clair ?</summary>
-
-Comment tu stockerais les cases de la grille de droite ? Ainsi que leur "état" (eau, bateau, touché, plouf) ?
-
-![grille-bataille-navale](https://user-images.githubusercontent.com/48241710/118808345-b6282480-b8a9-11eb-860f-9ad6b8f06125.png)
-
-<details><summary>Réponse...</summary>
-
-Dans un tableau à 2 dimensions :pray:
-
-</details>
-
-</details>
+![exo4](exo4.png)
