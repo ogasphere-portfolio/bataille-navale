@@ -69,7 +69,7 @@ const app = {
 
 		// On donne le focus sur le champ input pour 
 		// que l'utilisateur puisse saisir une case
-		eraseInput() ;
+		app.eraseInput() ;
 	},
 
 
@@ -195,7 +195,7 @@ const app = {
 	},
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", app.init);
 
 
 /**

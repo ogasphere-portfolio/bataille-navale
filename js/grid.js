@@ -57,7 +57,7 @@ const grid = {
     },
 
     // Traduire les coordonnées utilisateur en coordonnées tableau
-    getGridIndexes: (cellName) {
+    getGridIndexes: function (cellName) {
         let aReturn = [];
         let columnName = cellName[0];
         let rowName = Number(cellName[1]);
@@ -67,7 +67,8 @@ const grid = {
             grid.Headers.columns.indexOf(columnName)
         );
         return aReturn;
-    }
+    },
+
     checkCellName: function(coords) {
 
         let columnName = coords[0]; // Ex: A
