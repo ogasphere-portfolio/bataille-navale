@@ -1,301 +1,198 @@
 // Finalement je vais déclarer une variable "grid" qui va contenir TOUTES mes lignes
-let grid = [
-	["", "", "b", "b", "b", "", "", ""], // 0
-	["", "", "", "", "", "", "", ""], // 1
-	["", "", "", "", "b", "", "", ""], // 2
-	["", "", "", "", "b", "", "", ""], // 3
-	["", "", "", "", "b", "", "", ""], // 4
-	["", "", "", "", "b", "", "", ""], // 5
-	["", "", "b", "", "", "", "", ""], // 6
-	["", "", "b", "", "", "b", "b", "b"], // 7
-];
+const app = {
 
-// On se créé un tableau associatif pour stocker nos entêtes de lignes & de colonnes
-let gridHeaders = {
-	rows: [1, 2, 3, 4, 5, 6, 7, 8],
-	columns: ["A", "B", "C", "D", "E", "F", "G", "H"],
-};
+	init: function () {
+		console.log("Coucou je suis chargé & executé");
 
+		// declaration des constantes pour le branchement des évenements
+		const itemForm = document.querySelector("#game .form");
+		const btnStats = document.querySelector("#stats");
+		const btnHisto = document.querySelector("#toggle-actions");
+		const beforeGameForm = document.querySelector("#beforegame .form");
+		const themesBtnElement = document.querySelector('#theme');
+		// On branche les mouchards
 
-const init = function () {
+		// branchement sur l'envoi du premier formulaire : nom et nombre de colonnes 
+		beforeGameForm.addEventListener("submit", app.handleBeforeGame); 
 
-	// declaration des constantes pour le branchement des évenements
-	const itemForm = document.querySelector("#game .form");
-	const btnStats = document.querySelector("#stats");
-	const btnHisto = document.querySelector("#toggle-actions");
-	const beforeGameForm = document.querySelector("#beforegame .form");
+		// Branchement sur l'envoi du second formulaire 
+		itemForm.addEventListener("submit", app.handleSubmit);
 
-	// On branche les mouchards
+		// branchement sur le click du bouton statistiques
+		btnStats.addEventListener("click", app.handleStats);
 
-	// branchement sur l'envoi du premier formulaire : nom et nombre de colonnes 
-	beforeGameForm.addEventListener("submit", beforeGame); 
+		// branchement sur le click du bouton historique
+		btnHisto.addEventListener("click", app.handleAfficheHisto);
 
-	// Branchement sur l'envoi du second formulaire 
-	itemForm.addEventListener("submit", handleSubmit);
+		// Branchement sur le select pour changer le theme
+    	themesBtnElement.addEventListener("change", themes.handleSelectTheme);
 
-	// branchement sur le click du bouton statistiques
-	btnStats.addEventListener("click", stats);
-
-	// branchement sur le click du bouton historique
-	btnHisto.addEventListener("click", afficheHisto);
+		// Je cible toutes les cellules (div qui ont la classe cell)
+		const allCells = document.querySelectorAll('div.cell');
+		// Je boucle sur chaque cellule
+		// for (let index = 0; index < allCells.length; index++) {
+		for (const cellElement of allCells) {
 	
-};
-
-console.log("Coucou je suis chargé & executé");
-
-// fonction permettant de gérer le premier formulaire
-function beforeGame(event) {
-
-	// on bloque le submit du formulaire pour empecher le rechargement de la page
-	event.preventDefault();
-	
-	// On récupére les données du premier formulaire
-	const username = document.querySelector("#username").value;
-	const nbColonne = document.querySelector("#nbrows").value;
-	
-	// On affecte la constante username à la classe .username
-	//pour afficher le nom dans le H3
-	const putUsername = document.querySelector(".username");
-	putUsername.textContent = username;
-
-	// On masque le premier formulaire
-	const beforeGameForm = document.querySelector("#beforegame");
-	beforeGameForm.style.display = "none";
-
-	// on affiche la partie aprés la soumission du premier formulaire
-	const game = document.querySelector("#game");
-	game.style.display = "block";
-}
-
-
-// fonction permettant de gérer le second formulaire
-function handleSubmit(event) {
-
-	// on bloque le submit du formulaire pour empecher le rechargement de la page
-	event.preventDefault();
-
-	// On récupere la valeur saisie par l'utilisateur
-	const value = getInputValue();
-	
-	// Vérification de la validité de la saisie 
-	const isValid = checkInput(value); 
-	 
-	if (isValid === true) {	
+		  cellElement.addEventListener('click', app.handleClickOnCell);
+		}
+		// recuperation du cookie pour l'affichage du theme
+		const monBody = document.querySelector('body')
+        monBody.className=''
+        monBody.classList.add(themes.getCookie('theme'));
 		
-		// Si la saisie est valide, on envoie le missile
-		// et on met à jour l'historique
-		majHistorique(value,sendMissile(value));
+	},
+
+	// fonction permettant de gérer le premier formulaire
+	handleBeforeGame: function(event) {
+
+		// on bloque le submit du formulaire pour empecher le rechargement de la page
+		event.preventDefault();
 		
-		// On incremente le nombre de tours
-		increment();
-	} else { 
-		// Sinon oon affiche un message 
-		console.log("La case ciblée n'est pas valide");
-	}
-	// On efface le champ de saisie et on lui redonne le focus 
-	// pour une nouvelle sasie
-	eraseInput();
-}
+		// On récupére les données du premier formulaire
+		const formElement = event.currentTarget;
 
-function getInputValue() {
-	const inputValue = document.querySelector("#cellToHit").value;
-	return inputValue;
-}
+		const username = formElement.querySelector('#username').value;
+		const nbLigne = formElement.querySelector('#nbrows').value;
 
-function checkInput(inputValue) {
-	if (
-		// On verifie que la saisie coorrespond à une case de la grille
-		inputValue.length === 2 &&
-		gridHeaders["rows"].indexOf(Number(inputValue[1])) !== -1 &&
-		gridHeaders["columns"].indexOf(inputValue[0]) !== -1
-	) {
-		return true;
-	} else {
-		return false;
-	}
-}
+		// On affecte la constante username à la classe .username
+		//pour afficher le nom dans le H3
+		const putUsername = document.querySelector(".username");
+		putUsername.textContent = username;
 
-function sendMissile(cellName) {
-	const result = getGridIndexes(cellName);
-	console.log(result);
-	const rowIndex = result[0];
-	const columnIndex = result[1];
-	return sendMissileAt(rowIndex, columnIndex);
-}
+		// On masque le premier formulaire
+		const beforeGameForm = document.querySelector("#beforegame");
+		beforeGameForm.style.display = "none";
 
-function sendMissileAt(rowIndex, columnIndex) {
-	// je récupère la valeur de la cellule dans la grille
-	const targetCell = grid[rowIndex][columnIndex];
+		// on affiche la partie aprés la soumission du premier formulaire
+		const game = document.querySelector("#game");
+		game.style.display = "block";
 
-	// Je déclare ma variable qui sera retournée par ma fonction
-	// celle si va contenir un booleen
-	let bReturn;
+		// On donne le focus sur le champ input pour 
+		// que l'utilisateur puisse saisir une case
+		eraseInput() ;
+	},
 
-	// Si la valeur est un "b" c'est qu'il y a un bateau
-	if (targetCell === "b") {
-		// J'affiche le résultat
-		console.log("Touché !");
-		// Je modifie la grille avec le "t" pour indiquer que le bateau est touché
-		grid[rowIndex][columnIndex] = "t";
 
-		// je met à jour ma variable en indiquant "true" pour touché
-		bReturn = true;
+	// fonction permettant de gérer le second formulaire
+	handleSubmit: function(event) {
 
-		// Sinon si, on a déjà tiré ici...
-	} else if (targetCell === "t" || targetCell === "p") {
-		console.log(
-			"Allooo! Allooooo! Y'a personne au bout du fil ? Faut réfléchir McFly. Faut réfléchir !"
+		// on bloque le submit du formulaire pour empecher le rechargement de la page
+		event.preventDefault();
+
+		// On récupere la valeur saisie par l'utilisateur
+		const value = getInputValue();
+		
+		// Vérification de la validité de la saisie 
+		const isValid = checkInput(value);
+		
+		if (isValid === true) {	
+			
+			// Si la saisie est valide, on envoie le missile
+			// et on met à jour l'historique
+			majHistorique(value,sendMissile(value));
+			
+			// On incremente le nombre de tours
+			increment();
+		} else { 
+			// Sinon oon affiche un message 
+			console.log("La case ciblée n'est pas valide");
+		}
+		// On efface le champ de saisie et on lui redonne le focus 
+		// pour une nouvelle sasie
+		eraseInput();
+	},
+
+	handleStats: function() {
+		
+		// Affichages des statistiques 
+		const nbTirReussi = document.querySelectorAll(".cell.hit").length;
+		const nbTirRate = document.querySelectorAll(".cell.splash").length;
+		const totalTirs = nbTirReussi + nbTirRate;
+
+		// Si on a pas encore tiré...
+		if (totalTirs === 0) {
+			window.alert('Il faut d\'abord tirer');
+			return;
+		}
+
+		const tauxTirReussi = (nbTirReussi / totalTirs).toFixed(2) * 100;  // toFixed : permet de limiter à 2 chiffres
+		const tauxTirRate = (nbTirRate / totalTirs).toFixed(2) * 100;
+		window.alert(
+			"Taux de tir reussi :" +
+			tauxTirReussi +
+			"%  \n Taux de tirs raté : " +   //  \n retour à la ligne
+			" %  \n Nombre total de tirs : " +
+			totalTirs
 		);
-		// je met à jour ma variable en indiquant "false" pour raté
-		bReturn = false;
-
-		// Sinon (= quelque soit la valeur autre)
-	} else {
-		// J'affiche le résultat
-		console.log("Plouf !");
-
-		// Je modifie la grille avec le "p" pour indiquer que j'ai tiré dans l'eau
-		grid[rowIndex][columnIndex] = "p";
-
-		// je met à jour ma variable en indiquant "false" pour raté
-		bReturn = false;
-	}
-	// Je réaffiche ma grille après que celle-ci ai été modifiée
-	displayGrid();
-	displayHits();
-	return bReturn;
-}
-
-// Affichage de la grille dans la console 
-function displayGrid() {
-	console.log("  " + gridHeaders.columns.join(" "));
-
-	for (let rowIndex = 0; rowIndex < grid.length; rowIndex++) {
-		let stringLine = gridHeaders.rows[rowIndex] + " ";
-
-		stringLine += displayLine(rowIndex);
-
-		console.log(stringLine);
-	}
-}
-
-function displayLine(rowIndex) {
-	const gridLineToDisplay = grid[rowIndex];
-	// On initialise la chaine de caractères qui sera affichée pour le moment à vide.
-	let line = "";
-
-	for (
-		let columnIndex = 0; columnIndex < gridLineToDisplay.length; columnIndex++
-	) {
-		const currentChar = gridLineToDisplay[columnIndex];
-		let myCell = document.querySelector("#cell" + rowIndex + columnIndex);
-		myCell.textContent = currentChar;
-		if (currentChar === "t") {
-			myCell.classList.add("hit");
-		} else if (currentChar === "p") {
-			myCell.classList.add("splash");
-		}
-		if (currentChar === "") {
-			line += "~";
+	},
+	getInputValue: function() {
+		const inputValue = document.querySelector("#cellToHit").value;
+		return inputValue;
+	},
+	checkInput: function (inputValue) {
+		if (
+			// On verifie que la saisie coorrespond à une case de la grille
+			inputValue.length === 2 &&
+			gridHeaders["rows"].indexOf(Number(inputValue[1])) !== -1 &&
+			gridHeaders["columns"].indexOf(inputValue[0]) !== -1
+		) {
+			return true;
 		} else {
-			line += currentChar;
+			return false;
 		}
+	},
+	handleAfficheHisto: function () {
 
-		line += " ";
-	}
-
-	return line;
-}
-
-// Montrer les cellules touchées
-function displayHits() {
-	const hitCell = document.querySelectorAll(".hit");
-	let hits = [];
-
-	for (const currentElement of hitCell) {
-		hits.push(currentElement.dataset.cellName);
-	}
-	console.log("Cases touchées: " + hits.join(", "));
-}
-
-function eraseInput() {
-	// On sélectionne notre champ
-	const input = document.querySelector("#cellToHit");
-
-	// On définit la nouvelle de l'input comme étant une chaîne vide
-	input.value = "";
-
-	// On donne le focus au champ après l'avoir vidé
-	input.focus();
-}
-
-// On incrémente le nombre de tours
-function increment() {
-	const nbTour = document.querySelector("h3 #tourNb");
-	nbTour.textContent++;
-}
-
-
-// Traduire les coordonnées utilisateur en coordonnées tableau
-
-function getGridIndexes(cellName) {
-	let aReturn = [];
-	let columnName = cellName[0];
-	let rowName = Number(cellName[1]);
-
-	aReturn.push(
-		gridHeaders.rows.indexOf(rowName),
-		gridHeaders.columns.indexOf(columnName)
-	);
-	return aReturn;
-}
-
-
-function stats() {
-
-	// Affichages des statistiques 
-	const nbTirReussi = document.querySelectorAll(".hit").length;
-	const nbTirRate = document.querySelectorAll(".splash").length;
-	const totalTirs = nbTirReussi + nbTirRate;
-	const tauxTirReussi = (nbTirReussi / totalTirs) * 100;
-	const tauxTirRate = (nbTirRate / totalTirs) * 100;
-	window.alert(
-		"Taux de tir reussi :" +
-		tauxTirReussi +
-		"%  \n Taux de tirs raté : " +
-		tauxTirRate +
-		" %  \n Nombre total de tirs : " +
-		totalTirs
-	);
-}
-
-function afficheHisto() {
-
-	// Affichage et masquage de l'historique
-	const listeAction = document.querySelector("#actions");
-	if (listeAction.style.display == "block") {
-		listeAction.style.display = "none";
-	} else {
-		listeAction.style.display = "block";
-	}
-}
-
- // Mise à jour de l'historique 
- // bValue : tir reussi=true, tir raté=false
- // InputValue: case saisie par l'utilisateur
-function majHistorique(inputValue,bValue) {
-	const listeActions = document.querySelector("#actions");
-	const action = document.createElement("p");
-	const nbTour = document.querySelector("h3 #tourNb").textContent;
-	action.textContent = "Tour n° : " + nbTour + "  en " + inputValue
-	
-	if (bValue) {
-		action.textContent += " reussi";
+		// Affichage et masquage de l'historique
+		const listeAction = document.querySelector("#actions");
+		if (listeAction.style.display == "block") {
+			listeAction.style.display = "none";
+		} else {
+			listeAction.style.display = "block";
+		}
+	},
+	// Mise à jour de l'historique 
+	// bValue : tir reussi=true, tir raté=false
+	// InputValue: case saisie par l'utilisateur
+	majHistorique: function(inputValue,bValue) {
 		
-	}else{
-		action.textContent += " raté";
-	}
-	listeActions.prepend(action);
+		const listeActions = document.querySelector("#actions");
+		const action = document.createElement("p");
+		const nbTour = document.querySelector("h3 #tourNb").textContent;
+		action.textContent = "Tour n° : " + nbTour + "  en " + inputValue
+		
+		if (bValue) {
+			action.textContent += " reussi";
+			
+		}else{
+			action.textContent += " raté";
+		}
+		listeActions.prepend(action);
+	},
+	displayHits: function() {
+		const hitCell = document.querySelectorAll(".hit");
+		let hits = [];
+
+		for (const currentElement of hitCell) {
+			hits.push(currentElement.dataset.cellName);
+		}
+		console.log("Cases touchées: " + hits.join(", "));
+	},
+	eraseInput: function() {
+		// On sélectionne notre champ
+		const input = document.querySelector("#cellToHit");
+
+		// On définit la nouvelle de l'input comme étant une chaîne vide
+		input.value = "";
+
+		// On donne le focus au champ après l'avoir vidé
+		input.focus();
+	},
+	// On incrémente le nombre de tours
+	increment: function() {
+		const nbTour = document.querySelector("h3 #tourNb");
+		nbTour.textContent++;
+	},
 }
 
 document.addEventListener("DOMContentLoaded", init);

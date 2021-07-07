@@ -38,13 +38,15 @@
     </div>
 
     <div id="game">
+      
+
+      <h3><span class="username"></span> Tour <span id="tourNb">1</span></h3>
+
       <form class="form">
         <label for="cellToHit">Case sur laquelle envoyer un missile :</label>
         <input type="text" id="cellToHit" maxlength="2" />
         <button>Missile !!!!</button>
       </form>
-
-      <h3><span class="username"></span> Tour <span id="tourNb">1</span></h3>
 
       <div id="grid">
         <section class="row">
@@ -153,7 +155,10 @@
       </div>
 
       <div id="actions"></div>
-      <script src="js/app.js"></script>
+        <script src="js/grid.js"></script>
+        <script src="js/game.js"></script>
+        <script src="js/stats.js"></script>
+        <script src="js/app.js"></script>
     </div>
   </body>
 </html>
