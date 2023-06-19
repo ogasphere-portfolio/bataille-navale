@@ -7,6 +7,7 @@ const app = {
 		// declaration des constantes pour le branchement des évenements
 		const itemForm = document.querySelector("#game .form");
 		const btnStats = document.querySelector("#stats");
+		const btnScores = document.querySelector('#scores');
 		const btnHisto = document.querySelector("#toggle-actions");
 		const beforeGameForm = document.querySelector("#beforegame .form");
 		const themesBtnElement = document.querySelector('#theme');
@@ -19,7 +20,10 @@ const app = {
 		itemForm.addEventListener("submit", app.handleSubmit);
 
 		// branchement sur le click du bouton statistiques
-		btnStats.addEventListener("click", app.handleStats);
+		btnStats.addEventListener('click', stats.handleClickStats);
+
+		btnScores.addEventListener('click', score.handleClickScores);
+
 
 		// branchement sur le click du bouton historique
 		btnHisto.addEventListener("click", app.handleAfficheHisto);
@@ -80,51 +84,29 @@ const app = {
 		event.preventDefault();
 
 		// On récupere la valeur saisie par l'utilisateur
-		const value = getInputValue();
+		const value = app.getInputValue();
 		
 		// Vérification de la validité de la saisie 
-		const isValid = checkInput(value);
+		const isValid = grid.checkCellName(value);
 		
 		if (isValid === true) {	
 			
 			// Si la saisie est valide, on envoie le missile
 			// et on met à jour l'historique
-			majHistorique(value,sendMissile(value));
+			app.majHistorique(value,game.sendMissile(value));
 			
 			// On incremente le nombre de tours
-			increment();
+			app.increment();
 		} else { 
 			// Sinon oon affiche un message 
 			console.log("La case ciblée n'est pas valide");
 		}
 		// On efface le champ de saisie et on lui redonne le focus 
 		// pour une nouvelle sasie
-		eraseInput();
+		app.eraseInput();
 	},
 
-	handleStats: function() {
-		
-		// Affichages des statistiques 
-		const nbTirReussi = document.querySelectorAll(".cell.hit").length;
-		const nbTirRate = document.querySelectorAll(".cell.splash").length;
-		const totalTirs = nbTirReussi + nbTirRate;
-
-		// Si on a pas encore tiré...
-		if (totalTirs === 0) {
-			window.alert('Il faut d\'abord tirer');
-			return;
-		}
-
-		const tauxTirReussi = (nbTirReussi / totalTirs).toFixed(2) * 100;  // toFixed : permet de limiter à 2 chiffres
-		const tauxTirRate = (nbTirRate / totalTirs).toFixed(2) * 100;
-		window.alert(
-			"Taux de tir reussi :" +
-			tauxTirReussi +
-			"%  \n Taux de tirs raté : " +   //  \n retour à la ligne
-			" %  \n Nombre total de tirs : " +
-			totalTirs
-		);
-	},
+	
 	getInputValue: function() {
 		const inputValue = document.querySelector("#cellToHit").value;
 		return inputValue;

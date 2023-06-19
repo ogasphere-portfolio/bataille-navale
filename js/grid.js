@@ -44,7 +44,7 @@ const grid = {
 
     },
     displayGrid: function() {
-        console.log("  " + grid.Headers.columns.join(" "));
+        console.log("  " + grid.headers.columns.join(" "));
 
         for (let rowIndex = 0; rowIndex < grid.length; rowIndex++) {
             let stringLine = grid.Headers.rows[rowIndex] + " ";
@@ -63,8 +63,8 @@ const grid = {
         let rowName = Number(cellName[1]);
     
         aReturn.push(
-            grid.Headers.rows.indexOf(rowName),
-            grid.Headers.columns.indexOf(columnName)
+            grid.headers.rows.indexOf(rowName),
+            grid.headers.columns.indexOf(columnName)
         );
         return aReturn;
     },
