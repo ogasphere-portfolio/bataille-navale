@@ -139,9 +139,6 @@ const game = {
   
       document.querySelector('#game .username').textContent = username;
   
-      // On génère le code HTML de la grille
-      // grid.createGrid(nbrows);
-  
       // On affiche la grille
       grid.displayGrid();
   
