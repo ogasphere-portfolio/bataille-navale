@@ -2,12 +2,6 @@
 
 Maintenant qu'on a vu le langage JavaScript, on va pouvoir coder un jeu :tada: :muscle:
 
-<details><summary>Cool non ?</summary>
-
-![cool-cool-cool-cool-cool-cool](https://media.giphy.com/media/XAdbHJywVjF5K/giphy.gif)
-
-</details>
-
 ## Notre bataille navale
 
 Tout le monde connaît la bataille navale et ses règles :
